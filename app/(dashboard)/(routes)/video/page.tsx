@@ -23,7 +23,6 @@ const VideoPage = () => {
   const [video, setVideo] = useState<string>();
 
   const form = useForm<z.infer<typeof formSchema>>({
-    // @ts-expect-error
     resolver: zodResolver(formSchema),
     defaultValues: {
       prompt: "",

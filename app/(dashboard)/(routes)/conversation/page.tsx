@@ -23,7 +23,6 @@ const ConversationPage = () => {
     const router = useRouter();
     const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
     const form = useForm<z.infer<typeof formSchema>>({
-        // @ts-expect-error
         resolver: zodResolver(formSchema),
         defaultValues: {
             prompt: ""

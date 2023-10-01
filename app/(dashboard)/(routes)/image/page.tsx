@@ -21,13 +21,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import Empty from "@/components/empty";
 
 import { amountOptions, formSchema, resolutionOptions } from "./constant";
+import { useProModal } from "@/hooks/use-pro-modal";
+import toast from "react-hot-toast";
 
 const PhotoPage = () => {
     const router = useRouter();
+    const proModal = useProModal();
     const [photos, setPhotos] = useState<string[]>([]);
 
     const form = useForm<z.infer<typeof formSchema>>({
-        // @ts-expect-error
+        
         resolver: zodResolver(formSchema),
         defaultValues: {
             prompt: "",
@@ -49,7 +52,9 @@ const PhotoPage = () => {
             setPhotos(urls);
         } catch (error: any) {
             if (error?.response?.status === 403) {
-            } else {
+                proModal.onOpen();
+            } else{
+                toast.error("Something went wrong.");
             }
         } finally {
             router.refresh();

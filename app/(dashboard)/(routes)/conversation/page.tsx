@@ -17,9 +17,10 @@ import { Loader } from "@/components/loader";
 import UserAvatar from "@/components/user-avatar";
 import { cn } from "@/lib/utils";
 import { BotAvatar } from "@/components/bot-avatar";
-
+import { useProModal } from "@/hooks/use-pro-modal";
+import toast from "react-hot-toast";
 const ConversationPage = () => {
-
+    const ProModal = useProModal();
     const router = useRouter();
     const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
     const form = useForm<z.infer<typeof formSchema>>({
@@ -36,8 +37,12 @@ const ConversationPage = () => {
             const response = await axios.post('/api/conversation', { messages: newMessages });
             setMessages((current) => [...current, userMessage, response.data]);
             form.reset();
-        } catch (err) {
-            console.log("submit",err);
+        } catch (err:any) {
+            if(err?.response?.status === 403) {
+                ProModal.onOpen();
+            }else{
+                toast.error("Something went wrong.");
+            }
         } finally {
             router.refresh()
         }

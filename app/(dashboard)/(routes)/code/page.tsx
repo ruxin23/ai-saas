@@ -18,11 +18,13 @@ import UserAvatar from "@/components/user-avatar";
 import { cn } from "@/lib/utils";
 import { BotAvatar } from "@/components/bot-avatar";
 import ReactMarkdown from "react-markdown";
+import { useProModal } from "@/hooks/use-pro-modal";
+import toast from "react-hot-toast";
 const CodePage = () => {
     const router = useRouter();
+    const proModal = useProModal();
     const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
     const form = useForm<z.infer<typeof formSchema>>({
-        // @ts-expect-error
         resolver: zodResolver(formSchema),
         defaultValues: {
             prompt: ""
@@ -39,8 +41,12 @@ const CodePage = () => {
             setMessages((current) => [...current, userMessage, response.data]);
 
             form.reset();
-        } catch (err) {
-            console.log(err);
+        } catch (err:any) {
+            if(err?.response?.status === 403) {
+                proModal.onOpen();
+            }else{
+                toast.error("Something went wrong.");
+            }
         } finally {
             router.refresh()
         }

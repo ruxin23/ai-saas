@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Loader } from "@/components/loader";
-import  Empty  from "@/components/empty";
+import Empty from "@/components/empty";
 
 import { formSchema } from "./constant";
 import { useProModal } from "@/hooks/use-pro-modal";
@@ -44,7 +44,7 @@ const VideoPage = () => {
     } catch (error: any) {
       if (error?.response?.status === 403) {
         proModal.onOpen();
-      }else{
+      } else {
         toast.error("Something went wrong.");
       }
     } finally {
@@ -52,7 +52,7 @@ const VideoPage = () => {
     }
   }
 
-  return ( 
+  return (
     <div>
       <Heading
         title="Video Generation"
@@ -63,8 +63,8 @@ const VideoPage = () => {
       />
       <div className="px-4 lg:px-8">
         <Form {...form}>
-          <form 
-            onSubmit={form.handleSubmit(onSubmit)} 
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
             className="
               rounded-lg 
               border 
@@ -85,8 +85,8 @@ const VideoPage = () => {
                   <FormControl className="m-0 p-0">
                     <Input
                       className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
-                      disabled={isLoading} 
-                      placeholder="Clown fish swimming in a coral reef" 
+                      disabled={isLoading}
+                      placeholder="Clown fish swimming in a coral reef"
                       {...field}
                     />
                   </FormControl>
@@ -113,7 +113,7 @@ const VideoPage = () => {
         )}
       </div>
     </div>
-   );
+  );
 }
- 
+
 export default VideoPage;

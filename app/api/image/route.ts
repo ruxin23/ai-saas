@@ -1,7 +1,9 @@
-import { checkApiLimit,incrementApiLimit } from "@/lib/api-limit";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import { Configuration, OpenAIApi } from "openai";
+
+import { checkSubscription } from "@/lib/subscription";
+import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -9,7 +11,9 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-export async function POST(req: Request) {
+export async function POST(
+  req: Request
+) {
   try {
     const { userId } = auth();
     const body = await req.json();
@@ -20,9 +24,7 @@ export async function POST(req: Request) {
     }
 
     if (!configuration.apiKey) {
-      return new NextResponse("OpenAI API Key not configured.", {
-        status: 500,
-      });
+      return new NextResponse("OpenAI API Key not configured.", { status: 500 });
     }
 
     if (!prompt) {
@@ -36,10 +38,12 @@ export async function POST(req: Request) {
     if (!resolution) {
       return new NextResponse("Resolution is required", { status: 400 });
     }
-    const feeeTrial = await checkApiLimit()
 
-    if (!feeeTrial) {
-      return new NextResponse("Free trial limit reached", { status: 403 });
+    const freeTrial = await checkApiLimit();
+    const isPro = await checkSubscription();
+
+    if (!freeTrial && !isPro) {
+      return new NextResponse("Free trial has expired. Please upgrade to pro.", { status: 403 });
     }
 
     const response = await openai.createImage({
@@ -48,11 +52,13 @@ export async function POST(req: Request) {
       size: resolution,
     });
 
-    await incrementApiLimit()
+    if (!isPro) {
+      await incrementApiLimit();
+    }
 
     return NextResponse.json(response.data.data);
   } catch (error) {
-    console.log("[IMAGE_ERROR]", error);
+    console.log('[IMAGE_ERROR]', error);
     return new NextResponse("Internal Error", { status: 500 });
   }
-}
+};

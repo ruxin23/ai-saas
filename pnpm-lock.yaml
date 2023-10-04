@@ -62,6 +62,9 @@ dependencies:
   cmdk:
     specifier: ^0.2.0
     version: 0.2.0(@types/react@18.2.22)(react-dom@18.2.0)(react@18.2.0)
+  crisp-sdk-web:
+    specifier: ^1.0.21
+    version: 1.0.21
   eslint:
     specifier: 8.50.0
     version: 8.50.0
@@ -2047,6 +2050,10 @@ packages:
   /cookie@0.5.0:
     resolution: {integrity: sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==}
     engines: {node: '>= 0.6'}
+    dev: false
+
+  /crisp-sdk-web@1.0.21:
+    resolution: {integrity: sha512-jNF/zSSA0lsAWT3q4JLG6YxtMRvgai++PwesxEL2Zm6utZaN+AoWPAH01QTfjJC/c++nFT7YM56ucdi+Y5yP4A==}
     dev: false
 
   /cross-spawn@7.0.3:

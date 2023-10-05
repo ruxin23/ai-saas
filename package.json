@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.24.1",
@@ -33,6 +34,7 @@
     "eslint-config-next": "13.5.2",
     "lucide-react": "^0.279.0",
     "next": "13.5.2",
+    "next-themes": "^0.2.1",
     "openai": "3.3.0",
     "postcss": "8.4.30",
     "react": "18.2.0",
